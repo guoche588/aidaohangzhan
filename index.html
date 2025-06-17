@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI资源导航 - 探索人工智能世界</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #00d2ff;
+            --dark: #0f0c29;
+            --darker: #08061a;
+            --light: #f8f9fa;
+            --card-bg: rgba(25, 25, 60, 0.7);
+            --card-border: rgba(106, 17, 203, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            background-attachment: fixed;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 头部样式 */
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(106, 17, 203, 0.2) 0%, transparent 70%);
+            z-index: -1;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            animation: pulse 2s infinite;
+        }
+        
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: #a0a0d0;
+        }
+        
+        /* 搜索栏 */
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 50px;
+            border: 2px solid rgba(106, 17, 203, 0.5);
+            background: rgba(15, 15, 40, 0.8);
+            color: white;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.5);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        
+        /* 分类导航 */
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .category-btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: rgba(37, 117, 252, 0.15);
+            border: 1px solid rgba(37, 117, 252, 0.3);
+            color: #b0c4ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background: rgba(37, 117, 252, 0.3);
+            color: white;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(37, 117, 252, 0.4);
+        }
+        
+        /* 资源卡片 */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .resource-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--card-border);
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(0, 210, 255, 0.5);
+        }
+        
+        .card-header {
+            padding: 20px 20px 15px;
+            position: relative;
+        }
+        
+        .card-category {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-title i {
+            color: var(--accent);
+            font-size: 1.6rem;
+        }
+        
+        .card-content {
+            padding: 0 20px 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-description {
+            color: #b0b0d0;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+        
+        .card-link {
+            display: block;
+            padding: 12px 20px;
+            background: rgba(37, 117, 252, 0.15);
+            border-radius: 10px;
+            color: var(--accent);
+            text-decoration: none;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(37, 117, 252, 0.3);
+        }
+        
+        .card-link:hover {
+            background: rgba(37, 117, 252, 0.3);
+            box-shadow: 0 0 15px rgba(37, 117, 252, 0.3);
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(106, 17, 203, 0.2);
+            color: #a0a0d0;
+            font-size: 0.9rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+        
+        .footer-links a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.7);
+        }
+        
+        /* 动画效果 */
+        @keyframes pulse {
+            0% { text-shadow: 0 0 5px var(--accent); }
+            50% { text-shadow: 0 0 20px var(--accent); }
+            100% { text-shadow: 0 0 5px var(--accent); }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .category-nav {
+                gap: 10px;
+            }
+            
+            .category-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .resources-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .logo {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-brain logo-icon"></i>
+                <h1>AI资源导航</h1>
+            </div>
+            <p class="subtitle">探索全球顶尖人工智能工具、框架和资源平台，一站式访问最前沿的AI技术</p>
+            
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="搜索AI工具、平台或资源...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            
+            <div class="category-nav">
+                <button class="category-btn active">全部</button>
+                <button class="category-btn">聊天机器人</button>
+                <button class="category-btn">图像生成</button>
+                <button class="category-btn">AI开发</button>
+                <button class="category-btn">生产力工具</button>
+                <button class="category-btn">搜索引擎</button>
+                <button class="category-btn">视频工具</button>
+            </div>
+        </header>
+        
+        <main>
+            <div class="resources-grid">
+                <!-- 用户提供的资源 -->
+                <div class="resource-card">
+                    <div class="card-header">
+                        <span class="card-category">聊天机器人</span>
+                        <h2 class="card-title"><i class="fas fa-comment-alt"></i> ChatGPT</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">OpenAI开发的对话式AI系统，能够理解并生成自然语言文本，提供智能问答和对话服务。</p>
+                        <a href="https://chatgpt.com?utm_source=toolify" class="card-link" target="_blank">访问网站</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="card-header">
+                        <span class="card-category">AI开发</span>
+                        <h2 class="card-title"><i class="fab fa-openai"></i> OpenAI</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">人工智能研究实验室，开发了GPT系列模型、DALL·E图像生成器等突破性技术。</p>
+                        <a href="https://openai.com?utm_source=toolify" class="card-link" target="_blank">访问网站</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="card-header">
+                        <span class="card-category">生产力工具</span>
+                        <h2 class="card-title"><i class="fas fa-paint-brush"></i> Adobe AI</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">将AI技术整合到创意工具中，包括Firefly图像生成和Sensei智能内容分析。</p>
+                        <a href="https://adobe.com?utm_source=toolify" class="card-link" target="_blank">访问网站</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="card-header">
+                        <span class="card-category">生产力工具</span>
+                        <h2 class="card-title"><i class="fas fa-sticky-note"></i> Notion AI</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">智能笔记和工作空间工具，AI功能可帮助总结内容、生成文本和改进写作。</p>
+                        <a href="https://www.notion.so?utm_source=toolify" class="card-link" target="_blank">访问网站</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="card-header">
+                        <span class="card-category">搜索引擎</span>
+                        <h2 class="card-title"><i class="fas fa-search"></i> Perplexity AI</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">AI驱动的问答搜索引擎，提供来源引用和对话式搜索体验。</p>
+                        <a href="https://www.perplexity.ai?utm_source=toolify" class="card-link" target="_blank">访问网站</a>
+                    </div>
+                </div>
+                
+                <!-- 补充的全球AI资源 -->
+                <div class="resource-card">
+                    <div class="card-header">
+                        <span class="card-category">聊天机器人</span>
+                        <h2 class="card-title"><i class="fas fa-robot"></i> Claude</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">Anthropic开发的AI助手，强调安全性和有用性，具有长文本处理能力。</p>
+                        <a href="https://claude.ai" class="card-link" target="_blank">访问网站</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="card-header">
+                        <span class="card-category">图像生成</span>
+                        <h2 class="card-title"><i class="fas fa-palette"></i> Midjourney</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">通过Discord使用的AI艺术生成工具，能够根据文本提示创建高质量的图像作品。</p>
+                        <a href="https://midjourney.com" class="card-link" target="_blank">访问网站</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="card-header">
+                        <span class="card-category">AI开发</span>
+                        <h2 class="card-title"><i class="fas fa-hands-helping"></i> Hugging Face</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">开源AI社区平台，提供模型库、数据集和工具，支持构建和部署AI应用。</p>
+                        <a href="https://huggingface.co" class="card-link" target="_blank">访问网站</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="card-header">
+                        <span class="card-category">视频工具</span>
+                        <h2 class="card-title"><i class="fas fa-video"></i> Runway ML</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">创意AI工具平台，提供视频生成、编辑和特效功能，支持文本到视频生成。</p>
+                        <a href="https://runwayml.com" class="card-link" target="_blank">访问网站</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="card-header">
+                        <span class="card-category">搜索引擎</span>
+                        <h2 class="card-title"><i class="fab fa-google"></i> Google Gemini</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">谷歌的多模态AI模型，整合到搜索和其他产品中，提供智能信息处理能力。</p>
+                        <a href="https://gemini.google.com" class="card-link" target="_blank">访问网站</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="card-header">
+                        <span class="card-category">生产力工具</span>
+                        <h2 class="card-title"><i class="fas fa-microphone-alt"></i> ElevenLabs</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">先进的文本到语音平台，提供自然流畅的AI语音生成和语音克隆功能。</p>
+                        <a href="https://elevenlabs.io" class="card-link" target="_blank">访问网站</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="card-header">
+                        <span class="card-category">AI开发</span>
+                        <h2 class="card-title"><i class="fas fa-code"></i> GitHub Copilot</h2>
+                    </div>
+                    <div class="card-content">
+                        <p class="card-description">AI编程助手，可在编程时提供代码建议和补全，支持多种编程语言。</p>
+                        <a href="https://github.com/features/copilot" class="card-link" target="_blank">访问网站</a>
+                    </div>
+                </div>
+            </div></div>
+        </main></main>
+        
+        <页脚><footer>
+            <div class="footer-links">
+                关于我们<a href="#">关于我们</a>
+                提交资源<a href="#">提交资源</a>
+                使用条款<a href="#">使用条款</a>
+                隐私政策<a href="#">隐私政策</a>
+            </div></div>
+            <p>© 2023 AI资源导航站 | 探索人工智能的未来</p><p>© 2023 AI资源导航站 | 探索人工智能的未来</p>
+            <p>每日更新全球最新AI工具和资源</p><p>每日更新全球最新AI工具和资源</p>
+        </footer>
+    </div></div>
+
+    <script><script>
+        // 简单的搜索和分类功能// 简单的搜索和分类功能
+        document.addEventListener('DOMContentLoaded', function() {document.addEventListener('DOMContentLoaded', function() {
+            const searchBox = document.querySelector('.search-box');const searchBox = document.querySelector('.search-box');
+            const categoryBtns = document.querySelectorAll('.category-btn');const categoryBtns = document.querySelectorAll('.category-btn');
+            const resourceCards = document.querySelectorAll('.resource-card');const resourceCards = document.querySelectorAll('.resource-card');
+            
+            // 搜索功能// 搜索功能
+            searchBox.addEventListener('input', function() {searchBox.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();const searchTerm = this.value.toLowerCase();
+                
+                resourceCards.forEach(card => {resourceCards.forEach(card => {
+                    const title = card.querySelector('.card-title').textContent.toLowerCase();const title = card.querySelector('.card-title').textContent.toLowerCase();
+                    const description = card.querySelector('.card-description').textContent.toLowerCase();const description = card.querySelector('.card-description').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || description.includes(searchTerm)) {if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.style.display = 'flex';card.style.display = 'flex';
+                    } 否则 {} else {
+                        card.style.display = 'none';card.style.display = 'none';
+                    }}
+                });});
+            });});
+            
+            // 分类功能// 分类功能
+            categoryBtns.forEach(btn => {categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {btn.addEventListener('click', function() {
+                    // 移除所有active类// 移除所有active类
+                    categoryBtns.forEach(b => b.classList.remove('active'));categoryBtns.forEach(b => b.classList.remove('active'));
+                    // 添加active类到当前按钮// 添加active类到当前按钮
+                    this.classList.add('active');this.classList.add('active');
+                    
+                    const category = this.textContent;const category = this.textContent;
+                    
+                    resourceCards.forEach(card => {resourceCards.forEach(card => {
+                        const cardCategory = card.querySelector('.card-category').textContent;const cardCategory = card.querySelector('.card-category').textContent;
+                        
+                        if (category === '全部' || cardCategory === category) {if (category === '全部' || cardCategory === category) {
+                            card.style.display = 'flex';card.style.display = 'flex';
+                        } 否则 {} else {
+                            card.style.display = 'none';card.style.display = 'none';
+                        输入：                        }}}}
+                    });});});});
+                });});});});
+            });});});});
+        });});});});
+    </脚本></脚本>
+</主体>
+        </html>
